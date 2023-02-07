@@ -31,8 +31,7 @@ public class StreamTest {
         StringBuilder sb = new StringBuilder();
 
         System.out.println(Arrays.toString(buffer));
-//        char c = (char) buffer[0];
-//        System.out.println(c);
+
         while(true){
             int len = inputStream.read(buffer);
             if(len == -1) break;
@@ -48,6 +47,5 @@ public class StreamTest {
                 sb.append(c);
             }
         }
-//        System.out.println(texts);
     }
 }
