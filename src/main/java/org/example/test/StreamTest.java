@@ -47,10 +47,6 @@ public class StreamTest {
                 }
                 sb.append(c);
             }
-
-            if(len == -1){
-                break;
-            }
         }
 //        System.out.println(texts);
     }
