@@ -14,13 +14,22 @@ public class meteor3 {
         String line;
 
         while ((line = bf.readLine()) != null){
+            System.out.println(line);
             stringList.add(line);
+            System.out.println(stringList);
         }
+
+        bf.close();
+        System.out.println(stringList.size());
+
 
         String[] rs = stringList.get(0).split(" ");
         int r = Integer.parseInt(rs[0]); // 세로
         int s = Integer.parseInt(rs[1]); // 가로
         stringList.remove(0);
+
+        System.out.println(r);
+        System.out.println(s);
 
         List<String> newList = new ArrayList<>();
         List<String> meteor = new ArrayList<>();
@@ -55,8 +64,33 @@ public class meteor3 {
         }
 
         // meteor combine land
+        land.addAll(meteor);
+        String prev = "";
+        for (String l : land) {
+            String current = l;
+            String temp = current;
+            if(prev.length() == 0) prev = current;
+            String result = mixString(current, prev);
+            prev = temp;
+            newList.add(result);
 
 
+        }
+
+        // 이중포문문
+       for(int i = meteor.size() -1 ; i >=0 ; i--){
+           // 운석 마지막 줄
+           String meteorLine = meteor.get(i);
+           for (int j = 0; j < land.size(); j++) {
+               String landLine = land.get(j);
+               if(checkCollision(meteorLine, landLine)){
+                   String result = changeString(meteorLine);
+                   newList.add(result);
+               }
+           }
+       }
+
+        System.out.println(newList);
 
 
         for (int i = 1; i < stringList.size(); i++) {
@@ -77,7 +111,7 @@ public class meteor3 {
             char c1 = c.charAt(i);
             if(c1 == 'X'){
                 char c2 = n.charAt(i);
-                result = c2 == '#';
+                result = c2 == '#' || c2 == 'X';
             }
         }
         return result;
@@ -100,6 +134,21 @@ public class meteor3 {
                     // do nothing
                     break;
             }
+        });
+        return result.toString();
+    }
+
+    static String mixString(String cur, String prev) {
+        StringBuilder result = new StringBuilder();
+        cur.chars().forEach(c -> {
+            prev.chars().forEach(p->{
+                if (p == '.') {
+                    result.append(c);
+                } else {
+                    result.append(p);
+                }
+            });
+
         });
         return result.toString();
     }
