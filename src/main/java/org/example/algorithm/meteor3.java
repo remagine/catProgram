@@ -13,24 +13,16 @@ public class meteor3 {
         List<String> stringList = new ArrayList<>();
         String line;
 
-        while ((line = bf.readLine()) != null){
-            System.out.println(line);
+        while ((line = bf.readLine()) != null && !line.equals("")) {
             stringList.add(line);
-            System.out.println(stringList);
         }
 
         bf.close();
-        System.out.println(stringList.size());
-
 
         String[] rs = stringList.get(0).split(" ");
         int r = Integer.parseInt(rs[0]); // 세로
         int s = Integer.parseInt(rs[1]); // 가로
         stringList.remove(0);
-
-        System.out.println(r);
-        System.out.println(s);
-
         List<String> newList = new ArrayList<>();
         List<String> meteor = new ArrayList<>();
         int meteorR = 0;
@@ -38,33 +30,37 @@ public class meteor3 {
 
         for (int i = 0; i < stringList.size(); i++) {
             String current = stringList.get(i);
-            if(current.contains("X")){
+            if (current.contains("X")) {
                 meteor.add(current);
                 continue;
             }
             meteorR = i;
             break;
         }
+        System.out.println(meteor);
+        System.out.println(meteorR);
 
         int collisionR = 0;
-        for (int i = meteorR; i < stringList.size() ; i++) {
+        for (int i = meteorR; i < stringList.size(); i++) {
             String lastMeteor = stringList.get(meteorR);
             String current = stringList.get(i);
-            if(checkCollision(lastMeteor, current)){
+            if (checkCollision(lastMeteor, current)) {
                 collisionR = i;
                 break;
             }
         }
 
+
         for (int i = collisionR; i < stringList.size(); i++) {
             String current = stringList.get(i);
-            if(current.contains("#")){
+            if (current.contains("#")) {
                 land.add(current);
             }
         }
+        System.out.println(land);
 
         // meteor combine land
-        land.addAll(meteor);
+        /*land.addAll(meteor);
         String prev = "";
         for (String l : land) {
             String current = l;
@@ -73,43 +69,35 @@ public class meteor3 {
             String result = mixString(current, prev);
             prev = temp;
             newList.add(result);
-
-
-        }
+        }*/
 
         // 이중포문문
-       for(int i = meteor.size() -1 ; i >=0 ; i--){
-           // 운석 마지막 줄
-           String meteorLine = meteor.get(i);
-           for (int j = 0; j < land.size(); j++) {
-               String landLine = land.get(j);
-               if(checkCollision(meteorLine, landLine)){
-                   String result = changeString(meteorLine);
-                   newList.add(result);
-               }
-           }
-       }
-
-        System.out.println(newList);
-
-
-        for (int i = 1; i < stringList.size(); i++) {
-            String current = stringList.get(i);
-            String next = stringList.get(i+1);
-            String tmp = current;
-
-            if(!checkCollision(current, next)){
-                String result = changeString(current);
-                newList.add(result);
+        for (int i = meteor.size() - 1; i >= 0; i--) {
+            // 운석 마지막 줄
+            String meteorLine = meteor.get(i);
+            System.out.println(meteorLine);
+            for (String landLine : land) {
+                System.out.println(landLine);
+                if (checkCollision(meteorLine, landLine)) {
+                    String result = mixString(meteorLine, landLine);
+                    newList.add(result);
+                } else {
+                    newList.add(landLine);
+                }
             }
         }
+        newList.forEach(
+                System.out::println
+        );
+
+
     }
 
-    static boolean checkCollision(String c, String n){
+    static boolean checkCollision(String c, String n) {
         boolean result = false;
         for (int i = 0; i < c.length(); i++) {
             char c1 = c.charAt(i);
-            if(c1 == 'X'){
+            if (c1 == 'X') {
                 char c2 = n.charAt(i);
                 result = c2 == '#' || c2 == 'X';
             }
@@ -140,7 +128,18 @@ public class meteor3 {
 
     static String mixString(String cur, String prev) {
         StringBuilder result = new StringBuilder();
-        cur.chars().forEach(c -> {
+
+        for (int i = 0; i < cur.length(); i++) {
+            char c = cur.charAt(i);
+            char p = prev.charAt(i);
+            if (p == '.') {
+                result.append(c);
+            } else {
+                result.append(p);
+            }
+        }
+
+        /*cur.chars().forEach(c -> {
             prev.chars().forEach(p->{
                 if (p == '.') {
                     result.append(c);
@@ -148,8 +147,7 @@ public class meteor3 {
                     result.append(p);
                 }
             });
-
-        });
+        });*/
         return result.toString();
     }
 
