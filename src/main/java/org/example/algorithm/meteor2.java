@@ -4,104 +4,69 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class meteor2 {
+    static class Cord{
+        int r; // 세로
+        int s; // 가로
 
+        public Cord(int r, int s) {
+            this.r = r;
+            this.s = s;
+        }
+
+        public int getR() {
+            return r;
+        }
+
+        public int getS() {
+            return s;
+        }
+
+        public void setR(int r) {
+            this.r = r;
+        }
+
+        public void setS(int s) {
+            this.s = s;
+        }
+    }
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-        List<String> stringList = new ArrayList<>();
-        String line;
-
-        while ((line = bf.readLine()) != null){
-            stringList.add(line);
-        }
-
-        String[] rs = stringList.get(0).split(" ");
+        String[] lines = bf.readLine().split("\n");
+        String[] rs = lines[0].split(" ");
         int r = Integer.parseInt(rs[0]); // 세로
         int s = Integer.parseInt(rs[1]); // 가로
-        stringList.remove(0);
+        List<Cord> xCordList = new ArrayList<>();
+        List<Cord> sCordList = new ArrayList<>();
+        System.out.println(Arrays.toString(lines));
+        System.out.println(Arrays.toString(rs));
 
-        List<String> newList = new ArrayList<>();
-        List<String> meteor = new ArrayList<>();
-        int meteorR = 0;
-        List<String> land = new ArrayList<>();
-
-        for (int i = 0; i < stringList.size(); i++) {
-            String current = stringList.get(i);
-            if(current.contains("X")){
-                meteor.add(current);
-                continue;
-            }
-            meteorR = i;
-            break;
-        }
-
-        int collisionR = 0;
-        for (int i = meteorR; i < stringList.size() ; i++) {
-            String lastMeteor = stringList.get(meteorR);
-            String current = stringList.get(i);
-            if(checkCollision(lastMeteor, current)){
-                collisionR = i;
-                break;
+        for (int i = 1; i < lines.length; i++) {
+            char[] l = lines[i].toCharArray();
+            for (int j = 0; j < l.length; j++) {
+                if(l[j] == 'X'){
+                    xCordList.add(new Cord(i,j));
+                }
+                if(l[j] == '#') break;
             }
         }
 
-        for (int i = collisionR; i < stringList.size(); i++) {
-            String current = stringList.get(i);
-            if(current.contains("#")){
-                land.add(current);
+        System.out.println(xCordList);
+
+
+
+        for (int i = 1; i < lines.length; i++) {
+            char[] l = lines[i].toCharArray();
+            for (int j = 0; j < l.length; j++) {
+                if(l[j] == '#'){
+                    sCordList.add(new Cord(i,j));
+                }
             }
         }
 
-        // meteor combine land
-
-
-
-
-        for (int i = 1; i < stringList.size(); i++) {
-            String current = stringList.get(i);
-            String next = stringList.get(i+1);
-            String tmp = current;
-
-            if(!checkCollision(current, next)){
-                String result = changeString(current);
-                newList.add(result);
-            }
-        }
+        System.out.println(sCordList);
     }
-
-    static boolean checkCollision(String c, String n){
-        boolean result = false;
-        for (int i = 0; i < c.length(); i++) {
-            char c1 = c.charAt(i);
-            if(c1 == 'X'){
-                char c2 = n.charAt(i);
-                result = c2 == '#';
-            }
-        }
-        return result;
-    }
-
-    static String changeString(String s) {
-        StringBuilder result = new StringBuilder();
-        s.chars().forEach(c -> {
-            switch (c) {
-                case '.':
-                    result.append('.');
-                    break;
-                case 'X':
-                    result.append('.');
-                    break;
-                case '#':
-                    result.append('#');
-                    break;
-                default:
-                    // do nothing
-                    break;
-            }
-        });
-        return result.toString();
-    }
-
 }
