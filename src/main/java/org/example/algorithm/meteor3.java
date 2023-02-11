@@ -25,72 +25,52 @@ public class meteor3 {
         stringList.remove(0);
         List<String> newList = new ArrayList<>();
         List<String> meteor = new ArrayList<>();
-        int meteorR = 0;
         List<String> land = new ArrayList<>();
 
         for (int i = 0; i < stringList.size(); i++) {
             String current = stringList.get(i);
             if (current.contains("X")) {
                 meteor.add(current);
-                continue;
-            }
-            meteorR = i;
-            break;
-        }
-        System.out.println(meteor);
-        System.out.println(meteorR);
 
-        int collisionR = 0;
-        for (int i = meteorR; i < stringList.size(); i++) {
-            String lastMeteor = stringList.get(meteorR);
-            String current = stringList.get(i);
-            if (checkCollision(lastMeteor, current)) {
-                collisionR = i;
-                break;
-            }
-        }
-
-
-        for (int i = collisionR; i < stringList.size(); i++) {
-            String current = stringList.get(i);
-            if (current.contains("#")) {
+            } else {
                 land.add(current);
             }
+
         }
+        System.out.println(meteor);
         System.out.println(land);
 
-        // meteor combine land
-        /*land.addAll(meteor);
-        String prev = "";
-        for (String l : land) {
-            String current = l;
-            String temp = current;
-            if(prev.length() == 0) prev = current;
-            String result = mixString(current, prev);
-            prev = temp;
-            newList.add(result);
-        }*/
 
-        // 이중포문문
+        //충돌하면 랜드를 붙인다.
+        // 충돌하지 않으면 합친다.
+        // 합친 후 붙인다. 합친걸 기존 어레이에 넣는다.
+        // 만일
+
         for (int i = meteor.size() - 1; i >= 0; i--) {
-            // 운석 마지막 줄
             String meteorLine = meteor.get(i);
-            System.out.println(meteorLine);
-            for (String landLine : land) {
-                System.out.println(landLine);
-                if (checkCollision(meteorLine, landLine)) {
+            for (int j = 0; j < land.size(); j++) {
+                String landLine = land.get(j);
+
+                if (landLine.contains("X")) {
                     String result = mixString(meteorLine, landLine);
-                    newList.add(result);
-                } else {
+                    newList.add(0, result);
+                    break;
+                } else if (checkCollision(meteorLine, landLine)) {
                     newList.add(landLine);
+                } else {
+                    String result = mixString(meteorLine, landLine);
+                    land.set(j, result);
+                    newList.add(result);
                 }
             }
         }
+
         newList.forEach(
                 System.out::println
         );
 
 
+        /*System.out.println(mixString("XXX.XXX","X#XXX#X"));*//**/
     }
 
     static boolean checkCollision(String c, String n) {
@@ -99,31 +79,10 @@ public class meteor3 {
             char c1 = c.charAt(i);
             if (c1 == 'X') {
                 char c2 = n.charAt(i);
-                result = c2 == '#' || c2 == 'X';
+                result = c2 != '.';
             }
         }
         return result;
-    }
-
-    static String changeString(String s) {
-        StringBuilder result = new StringBuilder();
-        s.chars().forEach(c -> {
-            switch (c) {
-                case '.':
-                    result.append('.');
-                    break;
-                case 'X':
-                    result.append('.');
-                    break;
-                case '#':
-                    result.append('#');
-                    break;
-                default:
-                    // do nothing
-                    break;
-            }
-        });
-        return result.toString();
     }
 
     static String mixString(String cur, String prev) {
