@@ -51,6 +51,7 @@ public class meteor3 {
             for (int j = 0; j < land.size(); j++) {
                 String landLine = land.get(j);
 
+
                 if (landLine.contains("X")) {
                     String result = mixString(meteorLine, landLine);
                     newList.add(0, result);
