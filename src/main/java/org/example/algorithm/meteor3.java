@@ -11,6 +11,9 @@ public class meteor3 {
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         List<String> stringList = new ArrayList<>();
+        String line1 = bf.readLine();
+
+
         String line;
 
         while ((line = bf.readLine()) != null && !line.equals("")) {
@@ -40,23 +43,29 @@ public class meteor3 {
         System.out.println(meteor);
         System.out.println(land);
 
-
-        //충돌하면 랜드를 붙인다.
-        // 충돌하지 않으면 합친다.
-        // 합친 후 붙인다. 합친걸 기존 어레이에 넣는다.
-        // 만일
-
         for (int i = meteor.size() - 1; i >= 0; i--) {
             String meteorLine = meteor.get(i);
             for (int j = 0; j < land.size(); j++) {
                 String landLine = land.get(j);
-
-
                 if (landLine.contains("X")) {
                     String result = mixString(meteorLine, landLine);
                     newList.add(0, result);
                     break;
                 } else if (checkCollision(meteorLine, landLine)) {
+                    newList.add(landLine);
+                } else if (checkCollision(meteorLine, land.get(j + 1))) {
+                    String result = mixString(meteorLine, land.get(j + 1));
+                    land.set(j, result);
+                    newList.add(result);
+                }
+            }
+        }
+
+        /*for (int i = meteor.size() - 1; i >= 0; i--) {
+            String meteorLine = meteor.get(i);
+            for (int j = land.size() -1; j >= 0; j--) {
+                String landLine = land.get(j);
+                if (checkCollision(meteorLine, landLine)) {
                     newList.add(landLine);
                 } else {
                     String result = mixString(meteorLine, landLine);
@@ -64,7 +73,8 @@ public class meteor3 {
                     newList.add(result);
                 }
             }
-        }
+        }*/
+
 
         newList.forEach(
                 System.out::println
@@ -84,6 +94,44 @@ public class meteor3 {
             }
         }
         return result;
+    }
+
+    char[][] input;
+
+    static int checkMin(char[][] input) {
+        int result = 0;
+
+        // 컬럼순으로 캐릭터를 가져와서
+        // 그 값이 x이면 row1
+        // #가 처음으로 만나는 row2을 값을 가져와 뺀다
+        for (char[] chars : input) {
+            for (char c : chars) {
+
+            }
+        }
+        int minLength = Integer.MAX_VALUE;
+        for (int row = 0; row < input.length; row++) {
+            int land = -1;
+            int meteor = -1;
+            char[] chars = input[row];
+            for (int col = 0; col < chars.length; col++) {
+                char c = chars[col];
+                if (c == 'X') {
+                    meteor = col;
+                }
+
+                if (c == '#') {
+                    land = col;
+                    break;
+                }
+            }
+
+            if (land != -1 && meteor != -1) {
+                minLength = Math.min(minLength, (land - meteor));
+            }
+        }
+
+        return minLength;
     }
 
     static String mixString(String cur, String prev) {
