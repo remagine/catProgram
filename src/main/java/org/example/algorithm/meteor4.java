@@ -1,12 +1,13 @@
 package org.example.algorithm;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class meteor4 {
     public static void main(String[] args) throws IOException {
-        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader bf = new BufferedReader(new InputStreamReader(new BufferedInputStream(System.in)));
 
         String rs = bf.readLine();
         int r = Integer.parseInt(rs.split(" ")[0]);
