@@ -17,7 +17,7 @@ public class Meteor8 {
                 "#######").getBytes(StandardCharsets.UTF_8));
 
 
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(inputStream)));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(inputStream,8192)));
         String rowAndCol = bufferedReader.readLine();
         String rowStr = rowAndCol.split(" ")[0];
         String colStr = rowAndCol.split(" ")[1];
