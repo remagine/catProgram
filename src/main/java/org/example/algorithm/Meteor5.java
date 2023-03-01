@@ -32,16 +32,11 @@ public class Meteor5 {
 
         char[][] chars = new char[maxRow][maxCol];
 
-
         for (int row = 0; row < maxRow; row++) {
             String line = bufferedReader.readLine();
             for (int col = 0; col < maxCol; col++) {
                 chars[row][col] = line.charAt(col);
             }
-        }
-
-        for(char[] c : chars){
-            System.out.println(Arrays.toString(c));
         }
 
         int length = Integer.MAX_VALUE;
@@ -58,8 +53,6 @@ public class Meteor5 {
             }
         }
         length--;
-
-        System.out.println(length);
 
         //1번 방법
         for(int row = maxRow -1; row >= 0; row--){
